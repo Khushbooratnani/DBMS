@@ -1,0 +1,23 @@
+create table employees (  
+employee_id int primary key, 
+name varchar(50), 
+birth_date date, 
+department varchar(50),  
+salary decimal(10, 2),  
+hire_date date  
+); 
+insert all 
+into employees values(1, 'pranav', '1990-03-01', 'sales', 50000, '2023-02-01') 
+into employees values(2, 'krish', '1985-07-15', 'hr', 60000, '2022-06-12') 
+into employees values(3, 'siddhant', '1990-12-10', 'sales', 55000, '2021-04-10') 
+into employees values(4, 'aditya', '1991-12-10', 'sales', 65000, '2021-06-09') 
+select * from dual; 
+select name, year(current_date) - year(birth_date) as age 
+from employees 
+where year(birth_date) = 1990; 
+select avg(salary) as avgsalary 
+from employees 
+where department = 'sales'; 
+select * 
+from employees 
+where hire_date >= date_sub(current_date, interval 1 year);
