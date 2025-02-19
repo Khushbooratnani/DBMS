@@ -1,0 +1,80 @@
+create table employee ( 
+    employee_id int primary key, 
+    first_name varchar2(50), 
+    last_name varchar2(50), 
+    email varchar2(100), 
+    phone_number varchar2(15), 
+    hire_date date, 
+    job_id varchar2(10), 
+    salary decimal(10, 2), 
+    department_id int 
+);
+
+create table department ( 
+    department_id int primary key, 
+    department_name varchar(50) 
+);
+
+insert all 
+    into employee values (1, 'rahul', 'verma', 'rv@example.com', '9876543210', to_date('2023-01-05', 'yyyy-mm-dd'), 'dev', 68000, 1) 
+    into employee values (2, 'neha', 'kumar', 'nk@example.com', '9876543211', to_date('2022-08-20', 'yyyy-mm-dd'), 'dev', 72000, 1) 
+    into employee values (3, 'vikram', 'singh', 'vs@example.com', '9876543212', to_date('2021-11-11', 'yyyy-mm-dd'), 'hr', 64000, 2) 
+    into employee values (4, 'anuj', 'joshi', 'aj@example.com', '9876543213', to_date('2021-12-25', 'yyyy-mm-dd'), 'hr', 66000, 2) 
+    into employee values (5, 'surbhi', 'sharma', 'ss@example.com', '9876543214', to_date('2020-06-15', 'yyyy-mm-dd'), 'fin', 89000, 3) 
+    into employee values (6, 'ravi', 'shukla', 'rs@example.com', '9876543215', to_date('2020-07-10', 'yyyy-mm-dd'), 'fin', 94000, 3) 
+    into employee values (7, 'kiran', 'kumar', 'kk@example.com', '9876543216', to_date('2023-03-22', 'yyyy-mm-dd'), 'dev', 71000, 1) 
+    into employee values (8, 'akash', 'patel', 'ap@example.com', '9876543217', to_date('2022-04-15', 'yyyy-mm-dd'), 'hr', 67000, 2) 
+select * from dual;
+
+insert all  
+    into department values (1, 'engineering') 
+    into department values (2, 'operations') 
+    into department values (3, 'accounting') 
+select * from dual;
+
+select * from employee  
+where salary > (select avg(salary) from employee);
+
+select * from employee  
+where department_id = 1;
+
+select * from employee e1 
+where salary > ( 
+    select avg(salary) 
+    from employee e2 
+    where e1.department_id = e2.department_id
+);
+
+select d.department_name 
+from employee e 
+join department d on e.department_id = d.department_id 
+where e.salary = (select max(salary) from employee);
+
+select * from employee 
+where department_id = ( 
+    select department_id 
+    from employee 
+    group by department_id 
+    order by avg(salary) desc 
+    limit 1
+);
+
+select d.department_name, count(e.employee_id) as numberofemployees 
+from department d 
+join employee e on d.department_id = e.department_id 
+group by d.department_name 
+having count(e.employee_id) >= 2;
+
+-- group by queries
+select department_id, count(employee_id) as numberofemployees 
+from employee 
+group by department_id;
+
+select department_id, sum(salary) as totalsalaries 
+from employee 
+group by department_id;
+
+select department_id, count(employee_id) as numberofemployees 
+from employee 
+group by department_id 
+having count(employee_id) > 10;
